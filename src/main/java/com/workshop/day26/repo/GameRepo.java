@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -39,9 +40,27 @@ public class GameRepo {
         return docs;
     }
 
+    // db.game.find({}).count();
     public Integer getGameCount() {
         Integer count = mongoTemplate.findAll(Document.class, COLLECTION_GAME).size();
         // System.out.println("\nGameRepo >>> Number of Documents in game: " + count);
         return count;
+    }
+
+    // db.game.find({
+    //     ranking: {$exists: true}
+    // }).sort({ ranking: 1});
+    public List<Document> getGamesSortedByRank(Integer offset, Integer limit) {
+        Criteria c = Criteria.where("ranking").exists(true);
+        Query query = Query.query(c)
+            .with(Sort.by(Sort.Direction.ASC, "ranking"))
+            .skip(offset).limit(limit);
+
+        List<Document> result = mongoTemplate.find(query, Document.class, COLLECTION_GAME);
+        
+        System.out.println("Parameters: " + offset + ", " + limit);
+        System.out.println("\nGameRepo >>> Result: " + result);
+
+        return result;
     }
 }

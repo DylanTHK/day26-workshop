@@ -25,11 +25,19 @@ public class GameRestController {
     private GameService gameSvc;
 
     @GetMapping(path="/games", produces = MediaType.APPLICATION_JSON_VALUE) // optional parametes limit and offset
-    public ResponseEntity<String> getGamePage(@RequestParam(defaultValue = "25") Integer limit,
+    public ResponseEntity<String> getGamesPage(@RequestParam(defaultValue = "25") Integer limit,
         @RequestParam(defaultValue = "0") Integer offset) {
-        // call Service
+        // call getGames method from gameSvc
         String jsonGames = gameSvc.getGames(offset, limit);
         // Build a response entity with string
+        return new ResponseEntity<>(jsonGames, HttpStatus.OK);
+    }
+
+    @GetMapping(path="/games/rank", produces=MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> getGamesByRank(@RequestParam Integer offset, @RequestParam Integer limit) {
+        // call getGamesRank method from gameSvc
+        String jsonGames = gameSvc.getGamesByRank(offset, limit);
+
         return new ResponseEntity<>(jsonGames, HttpStatus.OK);
     }
 
