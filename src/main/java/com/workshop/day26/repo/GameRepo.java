@@ -63,4 +63,26 @@ public class GameRepo {
 
         return result;
     }
+
+    // db.game.find({
+    //     gid: 1
+    // });
+    public Document getGameById(Integer id) {
+        Query query = Query.query(
+            Criteria.where("gid").is(id));
+        Document result = mongoTemplate.findOne(query, Document.class, COLLECTION_GAME);
+        System.out.println("\n Document Extracted by ID: " + result);
+        return result;
+    }
+
+    // c2) user_rated: query number of comments for based on id
+    // db.comment.find({
+    //     gid: 1
+    // }).count();
+    public List<Document> getCommentsById(Integer id) {
+        Criteria c = Criteria.where("gid").is(id);
+        Query query = Query.query(c);
+        List<Document> comments = mongoTemplate.find(query, Document.class, COLLECTION_COMMENT);
+        return comments;
+    }
 }
