@@ -71,7 +71,7 @@ public class GameRepo {
         Query query = Query.query(
             Criteria.where("gid").is(id));
         Document result = mongoTemplate.findOne(query, Document.class, COLLECTION_GAME);
-        System.out.println("\n Document Extracted by ID: " + result);
+        System.out.println("\nGameRepo Document Extracted by ID: " + result);
         return result;
     }
 
@@ -83,6 +83,7 @@ public class GameRepo {
         Criteria c = Criteria.where("gid").is(id);
         Query query = Query.query(c);
         List<Document> comments = mongoTemplate.find(query, Document.class, COLLECTION_COMMENT);
+        System.out.println("GameRepo: " + comments);
         return comments;
     }
 }

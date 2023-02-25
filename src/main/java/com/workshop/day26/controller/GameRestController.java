@@ -49,8 +49,11 @@ public class GameRestController {
         System.out.println("Game ID Detected: " + gid);
         // query results from MongoDB
         String response = gameSvc.getGameById(gid);
-
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        if (null != response) {
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("No content found", HttpStatus.NOT_FOUND);
+        }
     }
 
 

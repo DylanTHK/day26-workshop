@@ -53,6 +53,9 @@ public class GameService {
     // }
     public String getGameById(Integer id) {
         Document doc = gameRepo.getGameById(id);
+        if (null == doc) {
+            return null;
+        }
         Timestamp ts = Timestamp.from(Instant.now());
         
         List<Document> comments = gameRepo.getCommentsById(id);
